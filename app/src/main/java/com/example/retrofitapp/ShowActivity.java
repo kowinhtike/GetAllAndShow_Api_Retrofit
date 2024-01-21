@@ -31,7 +31,7 @@ public class ShowActivity extends AppCompatActivity {
     public  void intialize(){
         title = findViewById(R.id.titleText);
         body = findViewById(R.id.bodyText);
-        editBtn = findViewById(R.id.updateBtn);
+        editBtn = findViewById(R.id.postButton);
         deleteBtn = findViewById(R.id.deleteBtn);
     }
 

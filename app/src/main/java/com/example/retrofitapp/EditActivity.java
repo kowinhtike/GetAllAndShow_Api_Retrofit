@@ -5,7 +5,6 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.Toast;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -30,7 +29,7 @@ public class EditActivity extends AppCompatActivity {
         titleInput = findViewById(R.id.titleInput);
         bodyInput = findViewById(R.id.bodyInput);
         userIdInput = findViewById(R.id.userIdInput);
-        updateBtn = findViewById(R.id.updateBtn);
+        updateBtn = findViewById(R.id.editBtn);
     }
 
     public void intializeLogic(){
@@ -57,11 +56,15 @@ public class EditActivity extends AppCompatActivity {
             }
         });
 
-        // Make the update API call
-        int postId = getIntent().getIntExtra("id",0);
         updateBtn.setOnClickListener(View -> {
-            Call<Post> updatePostCall = apiService.updatePost(postId,new Post(Integer.valueOf(userIdInput.getText().toString()),0,titleInput.getText().toString(),bodyInput.getText().toString()));
+            int postId = getIntent().getIntExtra("id",0);
+            Post post = new Post();
+            post.setTitle(titleInput.getText().toString());
+            post.setBody(bodyInput.getText().toString());
+            post.setUserId(Integer.valueOf(userIdInput.getText().toString()));
 
+            //call update api
+            Call<Post> updatePostCall = apiService.updatePost(postId,post);
             updatePostCall.enqueue(new Callback<Post>() {
                 @Override
                 public void onResponse(Call<Post> call, Response<Post> response) {

@@ -9,6 +9,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
 import java.util.List;
@@ -19,10 +20,28 @@ import retrofit2.Response;
 public class MainActivity extends AppCompatActivity {
 
     private ListView listView;
+    private Button addBtn;
 
     @Override
-    protected void onStart() {
-        super.onStart();
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_main);
+        intialize();
+//        List<Post> pl = new ArrayList<>();
+//        pl.add(new Post(1,1,"One","Two"));
+//        pl.add(new Post(2,3,"three","four"));
+//        Log.d("myPosts",String.valueOf(pl.size()));
+//        CustomAdapter adapter = new CustomAdapter(this,pl);
+//        listView.setAdapter(adapter);
+
+    }
+
+    public void intialize(){
+        listView = findViewById(R.id.listView);
+        addBtn = findViewById(R.id.addBtn);
+    }
+
+    public void intializeLogic(){
         ApiService apiService = RetrofitClient.getRetrofitInstance().create(ApiService.class);
         Call<List<Post>> call = apiService.getAllPosts();
         call.enqueue(new Callback<List<Post>>() {
@@ -42,20 +61,17 @@ public class MainActivity extends AppCompatActivity {
                 // Handle failure
             }
         });
+
+        addBtn.setOnClickListener(View -> {
+            Intent i = new Intent(this,AddActivity.class);
+            startActivity(i);
+        });
     }
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
-        listView = findViewById(R.id.listView);
-
-//        List<Post> pl = new ArrayList<>();
-//        pl.add(new Post(1,1,"One","Two"));
-//        pl.add(new Post(2,3,"three","four"));
-//        Log.d("myPosts",String.valueOf(pl.size()));
-//        CustomAdapter adapter = new CustomAdapter(this,pl);
-//        listView.setAdapter(adapter);
+    protected void onStart() {
+        super.onStart();
+        intializeLogic();
 
     }
 
@@ -108,10 +124,7 @@ public class MainActivity extends AppCompatActivity {
                 startActivity(i);
                     }
             );
-
             return convertView;
         }
-
     }
-
 }
