@@ -11,9 +11,7 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
-
 import java.util.List;
-
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -23,18 +21,8 @@ public class MainActivity extends AppCompatActivity {
     private ListView listView;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
-        listView = findViewById(R.id.listView);
-
-//        List<Post> pl = new ArrayList<>();
-//        pl.add(new Post(1,1,"One","Two"));
-//        pl.add(new Post(2,3,"three","four"));
-//        Log.d("myPosts",String.valueOf(pl.size()));
-//        CustomAdapter adapter = new CustomAdapter(this,pl);
-//        listView.setAdapter(adapter);
-
+    protected void onStart() {
+        super.onStart();
         ApiService apiService = RetrofitClient.getRetrofitInstance().create(ApiService.class);
         Call<List<Post>> call = apiService.getAllPosts();
         call.enqueue(new Callback<List<Post>>() {
@@ -54,6 +42,20 @@ public class MainActivity extends AppCompatActivity {
                 // Handle failure
             }
         });
+    }
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_main);
+        listView = findViewById(R.id.listView);
+
+//        List<Post> pl = new ArrayList<>();
+//        pl.add(new Post(1,1,"One","Two"));
+//        pl.add(new Post(2,3,"three","four"));
+//        Log.d("myPosts",String.valueOf(pl.size()));
+//        CustomAdapter adapter = new CustomAdapter(this,pl);
+//        listView.setAdapter(adapter);
 
     }
 
@@ -102,7 +104,7 @@ public class MainActivity extends AppCompatActivity {
             convertView.setOnClickListener( View -> {
                         // Show ID in a Toast message
                 Intent i = new Intent(getApplicationContext(),ShowActivity.class);
-                i.putExtra("id",String.valueOf(currentItem.getId()));
+                i.putExtra("id",currentItem.getId());
                 startActivity(i);
                     }
             );
